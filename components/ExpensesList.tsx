@@ -1,11 +1,15 @@
-import { createClient } from "@/utils/supabase/server";
+"use client";
 
-export default async function ExpensesList() {
+import { createClient } from "@/utils/supabase/client";
+import DeleteExpenseButton from "./DeleteExpenseButton";
+
+export default async function ExpensesList({ groupId }: { groupId: any }) {
   const supabase = createClient();
-  const { data, error } = await supabase.from("expenses").select();
+  const { data, error } = await supabase.from("expenses").select().eq("group_id", groupId);
 
   if (error) return <p>Something went wrong.</p>;
-  if (data)
+  if (data.length < 1) return <p>No expenses</p>;
+  if (data.length > 0)
     return (
       <div className="grid grid-cols-2 gap-5">
         {data.map(expense => (
@@ -14,7 +18,7 @@ export default async function ExpensesList() {
             <p>{expense.amount}</p>
             <p>{expense.date}</p>
             <p>Paid by: {expense.payer_id}</p>
-            <button className="bg-lime-300 px-2 py-1 rounded-xl">delete</button>
+            <DeleteExpenseButton expenseId={expense.id} />
           </div>
         ))}
       </div>

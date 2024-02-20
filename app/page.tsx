@@ -1,7 +1,7 @@
-import ExpensesList from "@/components/ExpensesList";
 import Header from "@/components/Header";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
+import GroupList from "@/components/GroupList";
 
 export default async function Index() {
   const supabase = createClient();
@@ -13,14 +13,14 @@ export default async function Index() {
   return !user ? (
     <Header />
   ) : (
-    <main className="flex-1 flex flex-col gap-6">
+    <main>
       <div className="flex justify-between">
-        <h2 className="font-bold text-4xl mb-4">All Expenses</h2>
-        <Link href="/new">
-          <button className="bg-purple-300 px-3 py-2 rounded-3xl">+ Add New Expense</button>
+        <h2 className="font-bold text-4xl mb-4">All Groups</h2>
+        <Link href="/groups/new">
+          <button className="bg-purple-300 px-3 py-2 rounded-3xl">+ New Group</button>
         </Link>
       </div>
-      <ExpensesList />
+      <GroupList />
     </main>
   );
 }

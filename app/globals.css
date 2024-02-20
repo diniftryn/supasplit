@@ -40,3 +40,8 @@
     transform: translateY(0);
   }
 }
+
+.header-title {
+  font-size: xx-large;
+  font-weight: bold;
+}
