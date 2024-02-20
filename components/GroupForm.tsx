@@ -85,7 +85,7 @@ export default function GroupForm() {
           </div>
         </div>
 
-        <button type="submit" className="py-2 px-5 bg-lime-300 rounded-3xl">
+        <button type="submit" className="py-2 px-5 bg-lime-300 dark:bg-lime-700 rounded-3xl">
           Create Group
         </button>
       </form>

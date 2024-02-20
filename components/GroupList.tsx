@@ -19,7 +19,7 @@ export default async function GroupList() {
               <p>with {group.users}</p>
               <div className="flex gap-x-1">
                 <Link href={`/groups/${group.id}`}>
-                  <button className="bg-blue-300 px-2 py-1 rounded-xl">view</button>
+                  <button className="bg-blue-300 dark:bg-blue-700 px-2 py-1 rounded-xl">view</button>
                 </Link>
                 <DeleteGroupButton groupId={group.id} />
               </div>

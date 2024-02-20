@@ -61,11 +61,11 @@ export default function ExpenseForm({ participants, groupId, percentage }: { par
   }
 
   return (
-    <div className="w-[50vw]">
+    <div>
       <h2 className="header-title mb-10">Add Expense</h2>
 
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-y-3">
+        <div className="grid grid-cols-2 gap-y-3 pb-5">
           <label htmlFor="groupId">group_id</label>
           <input type="text" id="groupId" name="groupId" value={groupId} readOnly />
 

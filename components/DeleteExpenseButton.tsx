@@ -20,7 +20,7 @@ export default function DeleteExpenseButton({ expenseId, groupId }: { expenseId:
 
   return (
     <form action={handleDelete}>
-      <button className="bg-lime-300 px-2 py-1 rounded-xl">delete</button>
+      <button className="bg-lime-300 dark:bg-lime-700 px-2 py-1 rounded-xl">delete</button>
     </form>
   );
 }
