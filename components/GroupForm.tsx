@@ -36,9 +36,9 @@ export default function GroupForm() {
 
   const handleUserSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setFormData(prevData => ({
+    setFormData((prevData: any) => ({
       ...prevData,
-      selectedUsers: prevData.selectedUsers.includes(Number(value)) ? prevData.selectedUsers.filter(userId => userId !== Number(value)) : [...prevData.selectedUsers, Number(value)]
+      selectedUsers: prevData.selectedUsers.includes(Number(value)) ? prevData.selectedUsers.filter((userId: any) => userId !== Number(value)) : [...prevData.selectedUsers, Number(value)]
     }));
   };
 
@@ -73,7 +73,7 @@ export default function GroupForm() {
             {availableUsers.length > 0 ? (
               availableUsers.map(user => (
                 <div key={user.id}>
-                  <input type="checkbox" id={`user${user.id}`} name="selectedUsers" value={user.id} checked={formData.selectedUsers.includes(user.id)} onChange={handleUserSelection} />
+                  <input type="checkbox" id={`user${user.id}`} name="selectedUsers" value={user.id} checked={formData.selectedUsers.includes(user.id as never)} onChange={handleUserSelection} />
                   <label htmlFor={`user${user.id}`} className="ml-2">
                     {user.username}
                   </label>

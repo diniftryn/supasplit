@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 
-export default function ExpenseForm({ participants, groupId, percentage }: { participants: any; groupId: any; percentage: any[] }) {
+export default function ExpenseForm({ participants, groupId, percentage }: { participants: any; groupId: any; percentage: any }) {
   const router = useRouter();
   const supabase = createClient();
 
@@ -78,7 +78,7 @@ export default function ExpenseForm({ participants, groupId, percentage }: { par
           <label htmlFor="payer_id">Payer:</label>
           <select id="payerId" name="payer_id" value={payerId} onChange={e => setPayerId(e.target.value)} required>
             <option>Select Payer</option>
-            {participants.map(user => (
+            {participants.map((user: any) => (
               <option value={user}>{user}</option>
             ))}
           </select>
@@ -92,7 +92,7 @@ export default function ExpenseForm({ participants, groupId, percentage }: { par
             <label htmlFor="customSplit">Custom Split</label>
 
             <div>
-              {participants.map((user, index) => (
+              {participants.map((user: any, index: any) => (
                 <div key={index} className="grid grid-cols-3">
                   <label htmlFor="customAmount1">{user}</label>
                   <input type="number" id="customAmount1" name="splitAmounts" value={splitPercentage[index]} onChange={e => handleSplitPercentageChange(e, index)} />
