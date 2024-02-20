@@ -11,7 +11,7 @@ export default async function ExpensesList({ groupId }: { groupId: any }) {
   if (data.length < 1) return <p>No expenses</p>;
   if (data.length > 0)
     return (
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid md:grid-cols-2 gap-5">
         {data.map(expense => (
           <div key={expense.id} className="border rounded-xl p-5">
             <p>{expense.description}</p>

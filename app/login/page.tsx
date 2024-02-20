@@ -68,7 +68,7 @@ export default function Login({ searchParams }: { searchParams: { message: strin
             Password
           </label>
           <input className="rounded-md px-4 py-2 bg-inherit border mb-6" type="password" name="password" placeholder="••••••••" required />
-          <SubmitButton formAction={signIn} className="bg-purple-300 rounded-md px-4 py-2 text-foreground mb-2" pendingText="Signing In...">
+          <SubmitButton formAction={signIn} className="bg-blue-300 rounded-md px-4 py-2 text-foreground mb-2" pendingText="Signing In...">
             Sign In
           </SubmitButton>
           <SubmitButton formAction={signUp} className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2" pendingText="Signing Up...">

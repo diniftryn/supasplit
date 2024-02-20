@@ -2,7 +2,7 @@ import AuthButton from "../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
 
-const defaultUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000";
+const defaultUrl = process.env.VERCEL_URL ? process.env.VERCEL_URL : "http://localhost:3000";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const canInitSupabaseClient = () => {

@@ -11,13 +11,13 @@ export default async function GroupList() {
   if (data.length < 1) return <p>You have no groups yet.</p>;
   if (data.length > 0)
     return (
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid md:grid-cols-2 gap-5">
         {data.map(group => (
           <div key={group.id} className="border rounded-xl p-5 flex justify-between items-center">
-            <div>
+            <div className="grid gap-y-1">
               <p>{group.name}</p>
-              <p>{group.users}</p>
-              <div className="md:flex md:gap-x-1">
+              <p>with {group.users}</p>
+              <div className="flex gap-x-1">
                 <Link href={`/groups/${group.id}`}>
                   <button className="bg-blue-300 px-2 py-1 rounded-xl">view</button>
                 </Link>
