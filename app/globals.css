@@ -45,3 +45,9 @@
   font-size: xx-large;
   font-weight: bold;
 }
+
+.submit-btn {
+  padding: 5 2;
+  background-color: lime;
+  border-radius: 20%;
+}

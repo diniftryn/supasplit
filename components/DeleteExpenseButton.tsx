@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-export default function DeleteExpenseButton({ expenseId }: { expenseId: string }) {
+export default function DeleteExpenseButton({ expenseId, groupId }: { expenseId: string; groupId: string }) {
   const router = useRouter();
 
   async function handleDelete() {
@@ -12,9 +12,9 @@ export default function DeleteExpenseButton({ expenseId }: { expenseId: string }
     const { error: errorExpenses } = await supabase.from("expenses").delete().eq("id", expenseId);
     if (errorExpenses) return <p>Unable to delete. Error: {JSON.stringify(errorExpenses)}</p>;
     if (!errorExpenses) {
-      const { error: errorParticipants } = await supabase.from("participants").delete().eq("id", expenseId);
+      const { error: errorParticipants } = await supabase.from("participants").delete().eq("expense_id", expenseId);
       if (errorParticipants) return <p>Unable to delete. Error: {JSON.stringify(errorExpenses)}</p>;
-      if (!errorParticipants) router.push(`/groups/${expenseId}`);
+      if (!errorParticipants) router.push(`/groups/${groupId}`);
     }
   }
 

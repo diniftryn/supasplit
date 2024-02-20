@@ -18,7 +18,7 @@ export default async function ExpensesList({ groupId }: { groupId: any }) {
             <p>{expense.amount}</p>
             <p>{expense.date}</p>
             <p>Paid by: {expense.payer_id}</p>
-            <DeleteExpenseButton expenseId={expense.id} />
+            <DeleteExpenseButton expenseId={expense.id} groupId={groupId} />
           </div>
         ))}
       </div>

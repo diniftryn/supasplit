@@ -1,6 +1,8 @@
-import { createClient } from "@/utils/supabase/server";
+"use client";
 
-export default async function UserBalances({ user }) {
+import { createClient } from "@/utils/supabase/client";
+
+export default async function UserBalances() {
   const supabase = createClient();
   const { data: expenses, error: errorExpenses } = await supabase.from("expenses").select();
   const { data: participants, error: errorParticipants } = await supabase.from("participants").select();
@@ -12,12 +14,10 @@ export default async function UserBalances({ user }) {
     const owedAmounts = calculateOwedAmounts(expenses, participants, payments);
 
     return (
-      user && (
-        <div>
-          <h2>Balances</h2>
-          <p>{JSON.stringify(owedAmounts)}</p>
-        </div>
-      )
+      <div>
+        <h2>Balances</h2>
+        <p>{JSON.stringify(owedAmounts)}</p>
+      </div>
     );
   }
 
