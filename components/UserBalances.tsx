@@ -20,7 +20,7 @@ export default async function UserBalances({ groupId }: { groupId: any }) {
         {group &&
           group[0].users.map((user: any) => (
             <p>
-              {user} {owedAmounts[user] < 0 ? " owes " : " is owed "} {owedAmounts[user]}
+              {user} {owedAmounts[user] < 0 ? " is owed " : " owes "} {owedAmounts[user]}
             </p>
           ))}
       </div>

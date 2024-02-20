@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
+import DeleteGroupButton from "./DeleteGroupButton";
 
 export default async function GroupList() {
   const supabase = createClient();
@@ -16,10 +17,14 @@ export default async function GroupList() {
             <div>
               <p>{group.name}</p>
               <p>{group.users}</p>
-              <Link href={`/groups/${group.id}`}>
-                <button className="bg-lime-300 px-2 py-1 rounded-xl">view</button>
-              </Link>
+              <div className="md:flex md:gap-x-1">
+                <Link href={`/groups/${group.id}`}>
+                  <button className="bg-blue-300 px-2 py-1 rounded-xl">view</button>
+                </Link>
+                <DeleteGroupButton groupId={group.id} />
+              </div>
             </div>
+
             <div>
               <Image src={group.imageUrl} width={100} height={150} alt={group.name} className="rounded-full" />
             </div>

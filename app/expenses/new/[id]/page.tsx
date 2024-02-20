@@ -12,11 +12,12 @@ export default async function NewExpense() {
   function calculateSplitPercentage() {
     const percentage: number[] = [];
     if (data) data[0].users.forEach(() => percentage.push(100 / data[0].users.length));
+    console.log(percentage);
     return percentage;
   }
 
   const { data, error } = await supabase.from("groups").select().eq("id", id);
 
   if (error) return <p>Group with id {id} doesn't exist.</p>;
-  if (data.length > 0) return <ExpenseForm participants={data[0].users} groupId={id} percentage={() => calculateSplitPercentage} />;
+  if (data.length > 0) return <ExpenseForm participants={data[0].users} groupId={id} percentage={calculateSplitPercentage} />;
 }
