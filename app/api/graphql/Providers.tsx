@@ -1,5 +1,5 @@
 "use client";
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 import { ReactNode } from "react";
 

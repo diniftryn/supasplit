@@ -33,7 +33,7 @@ model Expense {
   id            Int          @id @default(autoincrement())
   description   String
   amount        Float
-  date          DateTime
+  createdAt          DateTime
   payerId       Int
   groupId       Int
   payer         User         @relation("Payer", fields: [payerId], references: [id])
