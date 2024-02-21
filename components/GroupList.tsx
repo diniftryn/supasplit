@@ -1,35 +1,41 @@
-import { createClient } from "@/utils/supabase/server";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import DeleteGroupButton from "./DeleteGroupButton";
+import { useQuery } from "@apollo/client";
+import { GET_GROUPS } from "@/app/api/graphql/queries";
 
-export default async function GroupList() {
-  const supabase = createClient();
-  const { data, error } = await supabase.from("groups").select();
+export default function GroupList() {
+  const { loading, error, data } = useQuery(GET_GROUPS);
 
-  if (error) return <p>Something went wrong.</p>;
-  if (data.length < 1) return <p>You have no groups yet.</p>;
-  if (data.length > 0)
-    return (
-      <div className="grid md:grid-cols-2 gap-5">
-        {data.map(group => (
-          <div key={group.id} className="border rounded-xl p-5 flex justify-between items-center">
-            <div className="grid gap-y-1">
-              <p>{group.name}</p>
-              <p>with {group.users}</p>
-              <div className="flex gap-x-2">
-                <Link href={`/groups/${group.id}`}>
-                  <button className="bg-blue-300 dark:bg-blue-700 px-2 py-1 rounded-xl">view</button>
-                </Link>
-                <DeleteGroupButton groupId={group.id} />
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Something Went Wrong. Error: {error.message}</p>;
+
+  return (
+    <div className="grid md:grid-cols-2 gap-5">
+      {data?.groups.length < 0 ? (
+        <p>You have no groups yet.</p>
+      ) : (
+        <div>
+          {data.groups.map((group: any) => (
+            <div key={group.id} className="border rounded-xl p-5 flex justify-between items-center">
+              <div className="grid gap-y-1">
+                <p>{group.groupName}</p>
+                <p>with {group.users}</p>
+                <div className="flex gap-x-2">
+                  <Link href={`/groups/${group.id}`}>
+                    <button className="bg-blue-300 dark:bg-blue-700 px-2 py-1 rounded-xl">view</button>
+                  </Link>
+                  <DeleteGroupButton groupId={group.id} />
+                </div>
               </div>
-            </div>
 
-            <div>
-              <Image src={group.imageUrl} width={100} height={150} alt={group.name} className="rounded-full" />
+              <div>{/* <Image src={group.imageUrl} width={100} height={150} alt={group.name} className="rounded-full" /> */}</div>
             </div>
-          </div>
-        ))}
-      </div>
-    );
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }

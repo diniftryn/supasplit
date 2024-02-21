@@ -8,54 +8,53 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  username  String
-  email     String
-  expenses  Expense[]  @relation("Payer")
-  paymentsPayer  Payment[]  @relation("Payer")
-  paymentsPayee  Payment[]  @relation("Payee")
-  groups    Group[]
+  id            Int           @id @default(autoincrement())
+  username      String
+  email         String
+  expenses      Expense[]     @relation("Payer")
+  paymentsPayer Payment[]     @relation("Payer")
+  paymentsPayee Payment[]     @relation("Payee")
+  groups        Group[]
   pariticipants Participant[]
 }
 
 model Group {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   groupName String
   users     User[]
   expenses  Expense[]
 }
 
 model Expense {
-  id            Int          @id @default(autoincrement())
-  description   String
-  amount        Float
-  createdAt          DateTime
-  payerId       Int
-  groupId       Int
-  payer         User         @relation("Payer", fields: [payerId], references: [id])
-  participants  Participant[]
-  group         Group        @relation(fields: [groupId], references: [id])
+  id           Int           @id @default(autoincrement())
+  description  String
+  amount       Float
+  createdAt    DateTime
+  payerId      Int
+  groupId      Int
+  payer        User          @relation("Payer", fields: [payerId], references: [id])
+  participants Participant[]
+  group        Group         @relation(fields: [groupId], references: [id])
 }
 
 model Participant {
-  id        Int      @id @default(autoincrement())
-  expenseId Int
-  userId    Int
+  id          Int     @id @default(autoincrement())
+  expenseId   Int
+  userId      Int
   shareAmount Float?
-  user      User     @relation(fields: [userId], references: [id])
-  expense   Expense  @relation(fields: [expenseId], references: [id])
+  user        User    @relation(fields: [userId], references: [id])
+  expense     Expense @relation(fields: [expenseId], references: [id])
 }
 
 model Payment {
-  id        Int    @id @default(autoincrement())
-  payerId   Int
-  payeeId   Int
-  amount    Float
-  date      DateTime
-  payer     User   @relation("Payer", fields: [payerId], references: [id])
-  payee     User   @relation("Payee", fields: [payeeId], references: [id])
+  id      Int      @id @default(autoincrement())
+  payerId Int
+  payeeId Int
+  amount  Float
+  date    DateTime
+  payer   User     @relation("Payer", fields: [payerId], references: [id])
+  payee   User     @relation("Payee", fields: [payeeId], references: [id])
 }

@@ -1,4 +1,5 @@
 export const typeDefs = `#graphql 
+
   type User {
     id: Int
     username: String
@@ -21,11 +22,11 @@ export const typeDefs = `#graphql
     id: Int
     description: String
     amount: Float
-    date: DateTime
-    payerId: Int
-    groupId: Int
-    payer: User
-    participants: [Participant]
+    createdAt: DateTime
+    # payerId: Int
+    # groupId: Int
+    # payer: User
+    # participants: [Participant]
     group: Group
   }
 
@@ -50,5 +51,21 @@ export const typeDefs = `#graphql
 
   type DateTime {
     value: String
+  }
+
+  type Query {
+    users: [User]
+    group(id: Int!): Group
+    groups: [Group]
+    expense(id:Int!): Expense
+    expenses: [Expense]
+    participants: [Participant]
+    Group: Group
+    Expense: Expense
+    Participant: Participant
+  }
+
+  type Mutation {
+    addUser (username:String, email:String): User
   }
 `;

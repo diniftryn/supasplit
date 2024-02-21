@@ -2,6 +2,10 @@ import { Context } from "./route";
 
 export const resolvers = {
   Query: {
+    users: async (parent: any, args: any, context: Context) => {
+      return await context.prisma.user.findMany();
+    },
+
     groups: async (parent: any, args: any, context: Context) => {
       return await context.prisma.group.findMany({
         include: { users: true, expenses: true }
@@ -55,7 +59,7 @@ export const resolvers = {
       }
     },
 
-    Expenses: {
+    Expense: {
       payer: async (parent: any, _args: any, context: Context) => {
         return await context.prisma.user.findUnique({
           where: {
@@ -80,6 +84,17 @@ export const resolvers = {
           }
         });
       }
+    }
+  },
+
+  Mutation: {
+    addUser: async (_parent: any, args: any, context: Context) => {
+      return await context.prisma.user.create({
+        data: {
+          username: args.username,
+          email: args.email
+        }
+      });
     }
   }
 };

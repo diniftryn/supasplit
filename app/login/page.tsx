@@ -18,6 +18,7 @@ export default function Login({ searchParams }: { searchParams: { message: strin
     });
 
     if (error) {
+      console.log(error);
       return redirect("/login?message=Could not authenticate user");
     }
 

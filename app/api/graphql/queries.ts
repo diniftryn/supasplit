@@ -1,10 +1,20 @@
 import { gql } from "@apollo/client";
 
+export const GET_USER = gql`
+  query getUsers {
+    users {
+      id
+      username
+      email
+    }
+  }
+`;
+
 export const GET_GROUPS = gql`
   query getGroups {
     groups {
       id
-      name
+      groupName
       users {
         id
         username
@@ -14,7 +24,7 @@ export const GET_GROUPS = gql`
 `;
 
 export const GET_GROUP = gql`
-  query getGroup($id: ID!) {
+  query getGroup($id: Int!) {
     group {
       id
       name
@@ -52,7 +62,7 @@ export const GET_EXPENSES = gql`
 `;
 
 export const GET_EXPENSE = gql`
-  query getExpense($id: ID!) {
+  query getExpense($id: Int!) {
     expense {
       id
       description

@@ -1,6 +1,7 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import Layout from "@/components/Layout";
+import { Providers } from "./api/graphql/Providers";
 
 const defaultUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000";
 
@@ -15,7 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
         <main className="min-h-screen flex flex-col items-center">
-          <Layout>{children}</Layout>
+          <Layout>
+            <Providers>{children}</Providers>
+          </Layout>
         </main>
       </body>
     </html>
