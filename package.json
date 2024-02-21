@@ -6,10 +6,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@apollo/client": "^3.9.5",
+    "@prisma/client": "^5.10.1",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "autoprefixer": "10.4.17",
-    "codegen": "^0.1.0",
     "framer-motion": "^11.0.5",
     "geist": "^1.2.1",
     "next": "latest",
@@ -23,6 +24,7 @@
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
-    "encoding": "^0.1.13"
+    "encoding": "^0.1.13",
+    "prisma": "^5.10.1"
   }
 }
