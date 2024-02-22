@@ -44,16 +44,20 @@ export const resolvers = {
 
     Group: {
       users: async (parent: any, _args: any, context: Context) => {
-        return await context.prisma.user.findUnique({
+        return await context.prisma.user.findMany({
           where: {
-            id: parent.userId
+            groups: {
+              some: {
+                id: parent.id
+              }
+            }
           }
         });
       },
       expenses: async (parent: any, _args: any, context: Context) => {
         return await context.prisma.expense.findUnique({
           where: {
-            id: parent.expenseId
+            id: parent.id
           }
         });
       }

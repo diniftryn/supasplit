@@ -13,15 +13,18 @@ export default function GroupList() {
   if (error) return <p>Something Went Wrong. Error: {error.message}</p>;
 
   return (
-    <div className="grid md:grid-cols-2 gap-5">
+    <div>
       {data?.groups.length < 0 ? (
         <p>You have no groups yet.</p>
       ) : (
-        <div>
+        <div className="grid md:grid-cols-2 gap-5">
           {data.groups.map((group: any) => (
             <div key={group.id} className="border rounded-xl p-5 flex justify-between items-center">
               <div className="grid gap-y-1">
-                <p>{group.groupName}</p>
+                <p>
+                  {group.groupName}
+                  {/* {JSON.stringify(group)} */}
+                </p>
                 <p>
                   <span>with </span>
                   {group.users.map((user: { username: string }) => {

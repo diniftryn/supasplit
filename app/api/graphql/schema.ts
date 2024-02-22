@@ -15,7 +15,6 @@ export const typeDefs = `#graphql
     id: Int
     groupName: String
     imageUrl: String
-    usersId: [String]
     users: [User]
     expenses: [Expense]
   }
