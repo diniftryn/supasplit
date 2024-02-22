@@ -39,6 +39,7 @@ export default function GroupForm() {
     setFormData((prevData: any) => ({
       ...prevData,
       selectedUsers: prevData.selectedUsers.includes(Number(value)) ? prevData.selectedUsers.filter((userId: any) => userId !== Number(value)) : [...prevData.selectedUsers, Number(value)]
+      selectedUsers: prevData.selectedUsers.includes(Number(value)) ? prevData.selectedUsers.filter((userId: any) => userId !== Number(value)) : [...prevData.selectedUsers, Number(value)]
     }));
   };
 
