@@ -1,30 +1,27 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
+import { ADD_GROUP } from "@/app/api/graphql/mutations";
+import { useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function GroupForm() {
+export default function GroupForm({ availableUsers }: { availableUsers: [] }) {
   const router = useRouter();
 
-  const [availableUsers, setAvailableUsers] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     groupName: "",
     selectedUsers: [],
     imageUrl: ""
   });
 
-  const supabase = createClient();
-
-  async function getUsers() {
-    const { data, error } = await supabase.from("users").select();
-    if (error) return <p>Something went wrong.</p>;
-    if (data) setAvailableUsers(data);
-  }
-
-  useEffect(() => {
-    getUsers();
-  }, []);
+  const submitData = {
+    groupName: formData.groupName,
+    imageUrl: formData.imageUrl,
+    usersId: formData.selectedUsers.map(String)
+  };
+  const [addGroup] = useMutation(ADD_GROUP, {
+    variables: submitData
+  });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -42,18 +39,22 @@ export default function GroupForm() {
     }));
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(formData);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-    const submitData = { name: formData.groupName, users: formData.selectedUsers, imageUrl: formData.imageUrl };
-    const { data: dataExpense, error: errorExpense } = await supabase.from("groups").insert(submitData).select();
-    if (errorExpense) console.log("Unable to add. Error: " + errorExpense);
-    console.log("dataExpense " + JSON.stringify(dataExpense));
-    if (!errorExpense) {
-      alert("Group was successfully added!");
-      router.push("/");
+    if (!formData.groupName || !formData.selectedUsers) {
+      return alert("Please fill in all fields");
     }
+
+    console.log(submitData);
+    addGroup({ variables: submitData }).then(() => {
+      setFormData({
+        groupName: "",
+        selectedUsers: [],
+        imageUrl: ""
+      });
+      router.push("/");
+    });
   };
 
   return (
@@ -71,7 +72,7 @@ export default function GroupForm() {
           <label>Users:</label>
           <div>
             {availableUsers.length > 0 ? (
-              availableUsers.map(user => (
+              availableUsers.map((user: { id: string; username: string }) => (
                 <div key={user.id}>
                   <input type="checkbox" id={`user${user.id}`} name="selectedUsers" value={user.id} checked={formData.selectedUsers.includes(user.id as never)} onChange={handleUserSelection} />
                   <label htmlFor={`user${user.id}`} className="ml-2">

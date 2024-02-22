@@ -22,7 +22,12 @@ export default function GroupList() {
             <div key={group.id} className="border rounded-xl p-5 flex justify-between items-center">
               <div className="grid gap-y-1">
                 <p>{group.groupName}</p>
-                <p>with {group.users}</p>
+                <p>
+                  <span>with </span>
+                  {group.users.map((user: { username: string }) => {
+                    <span>{user.username}</span>;
+                  })}
+                </p>
                 <div className="flex gap-x-2">
                   <Link href={`/groups/${group.id}`}>
                     <button className="bg-blue-300 dark:bg-blue-700 px-2 py-1 rounded-xl">view</button>
@@ -31,7 +36,9 @@ export default function GroupList() {
                 </div>
               </div>
 
-              <div>{/* <Image src={group.imageUrl} width={100} height={150} alt={group.name} className="rounded-full" /> */}</div>
+              <div>
+                <Image src={group.imageUrl} width={100} height={150} alt={group.groupName} className="rounded-full" />
+              </div>
             </div>
           ))}
         </div>

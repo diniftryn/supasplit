@@ -24,6 +24,8 @@ model User {
 model Group {
   id        Int       @id @default(autoincrement())
   groupName String
+  imageUrl  String
+  usersId   String[]
   users     User[]
   expenses  Expense[]
 }
@@ -32,7 +34,7 @@ model Expense {
   id           Int           @id @default(autoincrement())
   description  String
   amount       Float
-  createdAt    DateTime
+  createdAt    DateTime      @default(now())
   payerId      Int
   groupId      Int
   payer        User          @relation("Payer", fields: [payerId], references: [id])

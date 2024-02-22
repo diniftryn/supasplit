@@ -95,6 +95,15 @@ export const resolvers = {
           email: args.email
         }
       });
+    },
+    addGroup: async (_parent: any, args: any, context: Context) => {
+      return await context.prisma.group.create({
+        data: {
+          groupName: args.groupName,
+          imageUrl: args.imageUrl,
+          usersId: args.usersId
+        }
+      });
     }
   }
 };

@@ -14,6 +14,8 @@ export const typeDefs = `#graphql
   type Group {
     id: Int
     groupName: String
+    imageUrl: String
+    usersId: [String]
     users: [User]
     expenses: [Expense]
   }
@@ -22,11 +24,11 @@ export const typeDefs = `#graphql
     id: Int
     description: String
     amount: Float
-    createdAt: DateTime
-    # payerId: Int
-    # groupId: Int
-    # payer: User
-    # participants: [Participant]
+    createdAt: String
+    payerId: Int
+    groupId: Int
+    payer: User
+    participants: [Participant]
     group: Group
   }
 
@@ -67,5 +69,6 @@ export const typeDefs = `#graphql
 
   type Mutation {
     addUser (username:String, email:String): User
+    addGroup (groupName:String, imageUrl:String, usersId:[String]): Group
   }
 `;

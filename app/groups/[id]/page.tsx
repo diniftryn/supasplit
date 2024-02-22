@@ -11,7 +11,7 @@ export default function GroupIndex() {
 
   return (
     <main>
-      <UserBalances groupId={id} />
+      {/* <UserBalances groupId={id} /> */}
 
       <div className="grid md:flex justify-between my-5">
         <h2 className="font-bold text-4xl mb-3 md:mb-0">All Expenses</h2>
