@@ -7,7 +7,7 @@ export default function BackButton() {
   const pathname = usePathname();
 
   return (
-    <button className={pathname === "/" ? "hidden" : "block mb-5 border-b border-b-transparent hover:border-b-black"} type="button" onClick={() => router.back()}>
+    <button className={pathname === "/" || pathname === "/login" ? "hidden" : "block mb-5 border-b border-b-transparent hover:border-b-black"} type="button" onClick={() => router.back()}>
       Back
     </button>
   );
