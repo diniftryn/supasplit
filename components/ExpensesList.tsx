@@ -5,8 +5,8 @@ import DeleteExpenseButton from "./DeleteExpenseButton";
 
 export default async function ExpensesList({ groupId }: { groupId: any }) {
   const supabase = createClient();
-  const { data, error } = await supabase.from("expenses").select().eq("group_id", groupId);
 
+  const { data, error } = await supabase.from("expenses").select().eq("groupId", groupId);
   if (error) return <p>Something went wrong.</p>;
   if (data.length < 1) return <p>No expenses</p>;
   if (data.length > 0)
@@ -16,8 +16,8 @@ export default async function ExpensesList({ groupId }: { groupId: any }) {
           <div key={expense.id} className="border rounded-xl p-5">
             <p>{expense.description}</p>
             <p>{expense.amount}</p>
-            <p>{expense.date}</p>
-            <p>Paid by: {expense.payer_id}</p>
+            <p>{expense.createdAt}</p>
+            <p>Paid by: {expense.payerId}</p>
             <DeleteExpenseButton expenseId={expense.id} groupId={groupId} />
           </div>
         ))}

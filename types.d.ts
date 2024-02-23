@@ -11,3 +11,12 @@ type Group = {
   userIds: string[] | number[];
   expenseIds: string[] | number[];
 };
+
+type Expense = {
+  id: string | number;
+  description: string;
+  amount: number;
+  createdAt: string;
+  payerId: string | number;
+  groupId: string | number;
+};

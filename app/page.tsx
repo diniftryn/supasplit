@@ -17,7 +17,7 @@ export default async function Index() {
       <div className="flex justify-between">
         <h2 className="font-bold text-4xl mb-5">All Groups</h2>
         <Link href="/groups/new">
-          <button className="bg-purple-300 px-3 py-2 rounded-3xl">+ New Group</button>
+          <button className="bg-purple-300 dark:bg-purple-700 px-3 py-2 rounded-3xl">+ New Group</button>
         </Link>
       </div>
 
