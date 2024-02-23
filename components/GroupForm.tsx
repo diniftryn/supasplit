@@ -46,11 +46,14 @@ export default function GroupForm() {
     event.preventDefault();
     console.log(formData);
 
-    const submitData = { name: formData.groupName, users: formData.selectedUsers, imageUrl: formData.imageUrl };
-    const { data: dataExpense, error: errorExpense } = await supabase.from("groups").insert(submitData).select();
-    if (errorExpense) console.log("Unable to add. Error: " + errorExpense);
-    console.log("dataExpense " + JSON.stringify(dataExpense));
-    if (!errorExpense) {
+    const submitData = { name: formData.groupName, imageUrl: formData.imageUrl, userIds: formData.selectedUsers };
+    const { data: dataGroup, error: errorGroup } = await supabase.from("groups").insert(submitData).select();
+    if (errorGroup) {
+      console.log("Unable to add. Error: " + errorGroup);
+      return router.push("/groups/new?message=Could not add group");
+    }
+    console.log("dataGroup " + JSON.stringify(dataGroup));
+    if (!errorGroup) {
       alert("Group was successfully added!");
       router.push("/");
     }
