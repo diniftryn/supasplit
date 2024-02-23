@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 
-export default function ExpenseForm({ participants, groupId, percentage }: { participants: any; groupId: any; percentage: any }) {
+export default function ExpenseForm({ participants, group, percentage }: { participants: User[]; group: Group; percentage: number[] }) {
   const router = useRouter();
   const supabase = createClient();
 
@@ -40,22 +40,34 @@ export default function ExpenseForm({ participants, groupId, percentage }: { par
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const submitExpense = { description, amount, date: new Date(), payer_id: payerId, group_id: groupId };
+    const submitExpense = { description, amount, payerId, createdAt: new Date(), groupId: group.id };
     console.log(submitExpense);
     const { data: dataExpense, error: errorExpense } = await supabase.from("expenses").insert(submitExpense).select();
-    if (errorExpense) console.log("Unable to add. Error: " + errorExpense);
+    if (errorExpense) console.log("Unable to add. Error: " + JSON.stringify(errorExpense));
     console.log("dataExpense " + JSON.stringify(dataExpense));
 
     if (dataExpense) {
       let submitParticipants = [];
       for (let i = 0; i < participants.length; i++) {
-        submitParticipants.push({ expense_id: dataExpense[0].id, user_id: participants[i], share_amount: splitAmounts[i] });
+        submitParticipants.push({ expenseId: dataExpense[0].id, userId: participants[i].id, shareAmount: splitAmounts[i] });
       }
       const { data: dataParticipant, error: errorParticipant } = await supabase.from("participants").insert(submitParticipants).select();
       if (errorParticipant) console.log("Unable to add. Error: " + errorParticipant);
       if (dataParticipant) {
         console.log(JSON.stringify(dataParticipant) + " successfully added");
-        router.push(`/groups/${groupId}`);
+
+        const expenseIdsToUpdate = group.expenseIds ? [...group.expenseIds, dataExpense[0].id] : [dataExpense[0].id];
+
+        const { data: dataUpdateGroupExpenses, error: errorUpdateGroupExpenses } = await supabase.from("groups").update({ expenseIds: expenseIdsToUpdate }).eq("id", group.id).select();
+
+        if (errorUpdateGroupExpenses) {
+          console.log("Unable to update group users. Error: " + JSON.stringify(errorUpdateGroupExpenses));
+          return router.push("/groups/new?message=Could not update group users");
+        }
+        if (!errorUpdateGroupExpenses) {
+          console.log("dataUpdateGroupExpenses " + JSON.stringify(dataUpdateGroupExpenses));
+          router.push(`/groups/${group.id}`);
+        }
       }
     }
   }
@@ -66,8 +78,8 @@ export default function ExpenseForm({ participants, groupId, percentage }: { par
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-y-3 pb-5">
-          <label htmlFor="groupId">group_id</label>
-          <input type="text" id="groupId" name="groupId" value={groupId} readOnly />
+          <label htmlFor="groupId">groupId</label>
+          <input type="text" id="groupId" name="groupId" value={group.id} readOnly />
 
           <label htmlFor="description">Expense Description:</label>
           <input type="text" id="description" name="description" value={description} onChange={e => setDescription(e.target.value)} required />
@@ -75,26 +87,26 @@ export default function ExpenseForm({ participants, groupId, percentage }: { par
           <label htmlFor="amount">Amount:</label>
           <input type="number" id="amount" name="amount" value={amount} onChange={e => calculateSplitAmounts(parseInt(e.target.value), splitMethod, splitPercentage)} required />
 
-          <label htmlFor="payer_id">Payer:</label>
-          <select id="payerId" name="payer_id" value={payerId} onChange={e => setPayerId(e.target.value)} required>
+          <label htmlFor="payerId">Payer:</label>
+          <select id="payerId" name="payerId" value={payerId} onChange={e => setPayerId(e.target.value)} required>
             <option>Select Payer</option>
             {participants.map((user: any) => (
-              <option value={user}>{user}</option>
+              <option value={user.id}>{user.username}</option>
             ))}
           </select>
 
           <label>Split Method:</label>
           <div>
-            <input type="radio" id="splitEqually" name="splitMethod" value="equally" checked={splitMethod === "equally"} onChange={() => calculateSplitAmounts(amount, "equally", [33.3, 33.3, 33.3])} />
+            <input type="radio" id="splitEqually" name="splitMethod" value="equally" checked={splitMethod === "equally"} onChange={() => calculateSplitAmounts(amount, "equally", percentage)} />
             <label htmlFor="splitEqually">Split Equally</label>
 
-            <input type="radio" id="customSplit" name="splitMethod" value="custom" checked={splitMethod === "custom"} onChange={() => calculateSplitAmounts(amount, "custom", [0, 0, 0])} />
+            <input type="radio" id="customSplit" name="splitMethod" value="custom" checked={splitMethod === "custom"} onChange={() => calculateSplitAmounts(amount, "custom", Array(participants.length).fill(0))} />
             <label htmlFor="customSplit">Custom Split</label>
 
             <div>
-              {participants.map((user: any, index: any) => (
+              {participants.map((user: User, index: number) => (
                 <div key={index} className="grid grid-cols-3">
-                  <label htmlFor="customAmount1">{user}</label>
+                  <label htmlFor="customAmount1">{user.username}</label>
                   <input type="number" id="customAmount1" name="splitAmounts" value={splitPercentage[index]} onChange={e => handleSplitPercentageChange(e, index)} />
                   <input type="number" id="customAmount1" name="splitAmounts" value={splitAmounts[index]} readOnly />
                 </div>
@@ -103,9 +115,11 @@ export default function ExpenseForm({ participants, groupId, percentage }: { par
           </div>
         </div>
 
-        <button type="submit" className="py-2 px-5 bg-lime-300 rounded-3xl">
-          Submit
-        </button>
+        <div className="flex justify-center pt-5">
+          <button type="submit" className="py-2 px-5 bg-lime-300 rounded-3xl">
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );
