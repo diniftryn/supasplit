@@ -4,7 +4,12 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 
-export default function Login({ searchParams }: { searchParams: { message: string } }) {
+export default async function Login({ searchParams }: { searchParams: { message: string } }) {
+  const supabase = createClient();
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
   const signIn = async (formData: FormData) => {
     "use server";
 
@@ -47,7 +52,22 @@ export default function Login({ searchParams }: { searchParams: { message: strin
     return redirect("/login?message=Check email to continue sign in process");
   };
 
-  return (
+  const signOut = async () => {
+    "use server";
+
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    return redirect("/login");
+  };
+
+  return user ? (
+    <p>
+      You are already logged in.{" "}
+      <Link href="/" className="text-slate-600 hover:border-b">
+        Go to Home
+      </Link>
+    </p>
+  ) : (
     <div className="flex justify-center">
       <div className="w-full lg:max-w-[40vw] px-6 gap-2">
         <div className="flex pb-5">
