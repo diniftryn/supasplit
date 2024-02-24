@@ -16,7 +16,7 @@ export default async function GroupListItem({ group }: { group: Group }) {
         <p>{group.name}</p>
         <p className="flex gap-x-1">
           <span>with</span>
-          {groupUsers && groupUsers.map(user => <span>{user.username}</span>)}
+          {groupUsers && groupUsers.map(user => <span key={user.id}>{user.username}</span>)}
         </p>
         <div className="flex gap-x-2 pt-3">
           <Link href={`/groups/${group.id}`}>
