@@ -22,13 +22,17 @@ export default async function UserBalances({ groupId }: { groupId: any }) {
 
   return (
     <div>
-      {group &&
-        group[0].userIds.map((userId: any) => (
-          <p key={userId}>
-            {users && users.find(user => user.id === userId).username}
-            {owedAmounts[userId] < 0 ? ` is owed $${owedAmounts[userId] * -1}` : ` owes $${owedAmounts[userId]}`}
-          </p>
-        ))}
+      <h2 className="font-bold text-4xl mb-3 md:mb-0">{group[0].name}</h2>
+
+      <div className="pt-5">
+        {group &&
+          group[0].userIds.map((userId: any) => (
+            <p key={userId}>
+              {users && users.find(user => user.id === userId).username}
+              {owedAmounts[userId] < 0 ? ` is owed $${owedAmounts[userId] * -1}` : ` owes $${owedAmounts[userId]}`}
+            </p>
+          ))}
+      </div>
     </div>
   );
 }
@@ -39,7 +43,7 @@ function calculateOwedAmounts(expenses: any, participants: any, payments: any, g
   group &&
     group[0].userIds.forEach((user: any) => {
       userBalances[user] = 0;
-      console.log("step 1 group memebers initialize userBalance: " + userBalances);
+      console.log("step 1 group members initialize userBalance: " + userBalances);
     });
 
   participants.forEach((participant: { userId: string | number; shareAmount: number }) => {
