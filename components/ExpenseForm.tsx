@@ -78,9 +78,6 @@ export default function ExpenseForm({ participants, group, percentage }: { parti
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-y-3 pb-5">
-          <label htmlFor="groupId">groupId</label>
-          <input type="text" id="groupId" name="groupId" value={group.id} readOnly />
-
           <label htmlFor="description">Expense Description:</label>
           <input type="text" id="description" name="description" value={description} onChange={e => setDescription(e.target.value)} required />
 
