@@ -22,7 +22,7 @@ export default async function GroupListItem({ group }: { group: Group }) {
           <Link href={`/groups/${group.id}`}>
             <button className="bg-blue-300 dark:bg-blue-700 px-2 py-1 rounded-xl">view</button>
           </Link>
-          <DeleteGroupButton groupId={group.id as string} />
+          <DeleteGroupButton group={group} groupUsers={groupUsers as User[]} />
         </div>
       </div>
 

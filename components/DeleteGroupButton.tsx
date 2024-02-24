@@ -4,20 +4,37 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-export default function DeleteGroupButton({ groupId }: { groupId: string }) {
+export default function DeleteGroupButton({ group, groupUsers }: { group: Group; groupUsers: User[] }) {
   const router = useRouter();
 
+  const supabase = createClient();
+
   async function handleDelete() {
-    const supabase = createClient();
-    const { error: errorGroup } = await supabase.from("groups").delete().eq("id", groupId);
+    const { error: errorGroup } = await supabase.from("groups").delete().eq("id", group.id);
     if (errorGroup) return <p>Unable to delete. Error: {JSON.stringify(errorGroup)}</p>;
-    const { data: expense, error: errorExpenses } = await supabase.from("expenses").delete().eq("group_id", groupId).select();
-    if (errorExpenses) return <p>Unable to delete. Error: {JSON.stringify(errorExpenses)}</p>;
-    // if (!errorExpenses) {
-    //   const { error: errorParticipants } = await supabase.from("participants").delete().eq("expense_id", expense[0].expense_id);
-    //   if (errorParticipants) return <p>Unable to delete. Error: {JSON.stringify(errorExpenses)}</p>;
-    //   if (!errorParticipants) router.push(`/groups/${groupId}`);
-    // }
+    if (!errorGroup) {
+      //remove groupId from user's groupIds
+      group.userIds.map(async userId => {
+        const user = groupUsers.find(user => user.id === userId);
+        const groupIdsToUpdate = user?.groupIds && user.groupIds.filter((id: string) => id !== group.id);
+
+        const { data: dataUpdateUserGroup, error: errorUpdateUserGroup } = await supabase.from("users").update({ groupIds: groupIdsToUpdate }).eq("id", userId).select();
+
+        if (errorUpdateUserGroup) {
+          console.log("Unable to update user groups. Error: " + JSON.stringify(errorUpdateUserGroup));
+          return router.push("/groups/new?message=Could not update group users");
+        }
+        if (!errorUpdateUserGroup) {
+          console.log("dataUpdateUserGroup " + JSON.stringify(dataUpdateUserGroup));
+        }
+      });
+
+      const { error: errorExpenses } = await supabase.from("expenses").delete().eq("groupId", group.id).select();
+      if (errorExpenses) return <p>Unable to delete. Error: {JSON.stringify(errorExpenses)}</p>;
+      if (!errorExpenses) {
+        router.push("/");
+      }
+    }
   }
 
   return (
