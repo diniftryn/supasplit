@@ -25,13 +25,16 @@ export default async function UserBalances({ groupId }: { groupId: any }) {
       <h2 className="font-bold text-4xl mb-3 md:mb-0">{group[0].name}</h2>
 
       <div className="pt-5">
-        {group &&
+        {group && group[0].userIds.every((userId: any) => owedAmounts[userId] === 0) ? (
+          <p>All settled.</p>
+        ) : (
           group[0].userIds.map((userId: any) => (
             <p key={userId}>
               {users && users.find(user => user.id === userId).username}
               {owedAmounts[userId] < 0 ? ` is owed $${owedAmounts[userId] * -1}` : ` owes $${owedAmounts[userId]}`}
             </p>
-          ))}
+          ))
+        )}
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ export default async function ExpensesList({ groupId }: { groupId: any }) {
     return (
       <div className="grid md:grid-cols-2 gap-5">
         {data.map(expense => (
-          <ExpenseListItem expense={expense} groupId={groupId} />
+          <ExpenseListItem key={expense.id} expense={expense} groupId={groupId} />
         ))}
       </div>
     );
