@@ -26,7 +26,7 @@ export default async function UserBalances({ groupId }: { groupId: any }) {
 
       <div className="pt-5">
         {group && group[0].userIds.every((userId: any) => owedAmounts[userId] === 0) ? (
-          <p>All settled.</p>
+          <p>All settled</p>
         ) : (
           group[0].userIds.map((userId: any) => (
             <p key={userId}>
