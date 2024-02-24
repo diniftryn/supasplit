@@ -30,7 +30,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
         <main className="w-[90vw] md:max-w-[70vw] lg:max-w-[50vw]">
-          <BackButton />
+          {/* <BackButton /> */}
           {children}
         </main>
       </div>
