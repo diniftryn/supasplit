@@ -97,17 +97,19 @@ export default function ExpenseForm({ participants, group, percentage }: { parti
 
           <label>Split Method:</label>
           <div>
-            <input type="radio" id="splitEqually" name="splitMethod" value="equally" checked={splitMethod === "equally"} onChange={() => calculateSplitAmounts(amount, "equally", percentage)} />
-            <label htmlFor="splitEqually">Split Equally</label>
+            <input className="mr-1" type="radio" id="splitEqually" name="splitMethod" value="equally" checked={splitMethod === "equally"} onChange={() => calculateSplitAmounts(amount, "equally", percentage)} />
+            <label className="pr-2" htmlFor="splitEqually">
+              Split Equally
+            </label>
 
-            <input type="radio" id="customSplit" name="splitMethod" value="custom" checked={splitMethod === "custom"} onChange={() => calculateSplitAmounts(amount, "custom", Array(participants.length).fill(0))} />
+            <input className="mr-1" type="radio" id="customSplit" name="splitMethod" value="custom" checked={splitMethod === "custom"} onChange={() => calculateSplitAmounts(amount, "custom", Array(participants.length).fill(0))} />
             <label htmlFor="customSplit">Custom Split</label>
 
             <div>
               {participants.map((user: User, index: number) => (
                 <div key={index} className="grid grid-cols-3">
                   <label htmlFor="customAmount1">{user.username}</label>
-                  <input type="number" id="customAmount1" name="splitAmounts" value={splitPercentage[index]} onChange={e => handleSplitPercentageChange(e, index)} />
+                  <input className="mx-2" type="number" id="customAmount1" name="splitAmounts" value={splitPercentage[index]} onChange={e => handleSplitPercentageChange(e, index)} />
                   <input type="number" id="customAmount1" name="splitAmounts" value={splitAmounts[index]} readOnly />
                 </div>
               ))}
