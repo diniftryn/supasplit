@@ -38,7 +38,7 @@ export default function GroupForm({ availableUsers }: { availableUsers: User[] }
     event.preventDefault();
     console.log(formData);
 
-    const submitData = { name: formData.groupName, imageUrl: formData.imageUrl, userIds: formData.selectedUsers };
+    const submitData = { name: formData.groupName, imageUrl: formData.imageUrl, userIds: formData.selectedUsers, expenseIds: [] };
     const { data: dataCreateGroup, error: errorCreateGroup } = await supabase.from("groups").insert(submitData).select();
     if (errorCreateGroup) {
       console.log("Unable to add. Error: " + errorCreateGroup);

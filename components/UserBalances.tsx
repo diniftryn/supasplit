@@ -9,10 +9,12 @@ export default async function UserBalances({ groupId }: { groupId: any }) {
   const { data: group, error: errorGroup } = await supabase.from("groups").select().eq("id", groupId);
   const { data: expenses, error: errorExpenses } = await supabase.from("expenses").select().eq("groupId", groupId);
   console.log("expenses: " + JSON.stringify(expenses));
-  const { data: participants, error: errorParticipants } = await supabase.from("participants").select();
+
+  if (errorGroup || errorExpenses) return <p>Unable to fetch group expenses.</p>;
+  const { data: participants, error: errorParticipants } = await supabase.from("participants").select().in("expenseId", group[0].expenseIds);
   const { data: payments, error: errorPayments } = await supabase.from("payments").select();
 
-  if (errorGroup || errorExpenses || errorParticipants || errorPayments) return <p>Unable to fetch User Balances.</p>;
+  if (errorParticipants || errorPayments) return <p>Unable to fetch User Balances.</p>;
   if (!errorExpenses && !errorParticipants && !errorPayments) {
     owedAmounts = calculateOwedAmounts(expenses, participants, payments, group);
   }
@@ -46,23 +48,23 @@ function calculateOwedAmounts(expenses: any, participants: any, payments: any, g
   group &&
     group[0].userIds.forEach((user: any) => {
       userBalances[user] = 0;
-      console.log("step 1 group members initialize userBalance: " + userBalances);
+      console.log("step 1 group members initialize userBalance: " + JSON.stringify(userBalances));
     });
 
   participants.forEach((participant: { userId: string | number; shareAmount: number }) => {
     userBalances[participant.userId] += participant.shareAmount;
-    console.log("step 2 participants: " + userBalances);
+    console.log("step 2 participants: " + JSON.stringify(userBalances));
   });
 
   expenses.forEach((expense: { payerId: any; amount: number }) => {
     userBalances[expense.payerId] -= expense.amount;
-    console.log("step 3 expenses: " + userBalances);
+    console.log("step 3 expenses: " + JSON.stringify(userBalances));
   });
 
   payments.forEach((payment: { payerId: string | number; amount: number; payeeId: string | number }) => {
     userBalances[payment.payerId] -= payment.amount;
     userBalances[payment.payeeId] += payment.amount;
-    console.log("step 4 payments: " + userBalances);
+    console.log("step 4 payments: " + JSON.stringify(userBalances));
   });
 
   return userBalances;
