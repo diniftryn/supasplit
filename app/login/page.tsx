@@ -45,11 +45,21 @@ export default async function Login({ searchParams }: { searchParams: { message:
       }
     });
 
-    if (error) {
+    const { data: checkUser, error: errorCheckUser } = await supabase.from("users").select().eq("email", email);
+    if (checkUser) return redirect("/login?User already exists. Please login instead.");
+
+    if (error || errorCheckUser) {
       return redirect("/login?message=Could not authenticate user");
     }
 
-    return redirect("/login?message=Check email to continue sign in process");
+    const { data: createUser, error: errorCreateUser } = await supabase
+      .from("users")
+      .insert({ email, username: email.substring(0, email.indexOf("@")) })
+      .select();
+    if (errorCreateUser) {
+      return redirect("/login?message=Could not create user");
+    }
+    if (createUser) return redirect("/login?message=Check email to continue sign in process");
   };
 
   const signOut = async () => {
